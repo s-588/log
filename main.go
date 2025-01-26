@@ -22,11 +22,11 @@ const (
 )
 
 type Opts struct {
-	funcName   bool
-	fileName   bool
-	lineNumber bool
-	date       bool
-	time       bool
+	FuncName   bool
+	FileName   bool
+	LineNumber bool
+	Date       bool
+	Time       bool
 }
 
 type Logger struct {
@@ -72,19 +72,19 @@ func (l *Logger) Print(messages ...Msg) {
 	if len(messages) < 1 {
 		return
 	}
-	if l.date {
+	if l.Date {
 		l.out.Write([]byte(time.Now().Format(time.DateOnly) + " "))
 	}
-	if l.time {
+	if l.Time {
 		l.out.Write([]byte(time.Now().Format(time.TimeOnly) + " "))
 	}
-	if l.fileName {
+	if l.FileName {
 		l.out.Write([]byte(filePath + " "))
 	}
-	if l.lineNumber {
+	if l.LineNumber {
 		l.out.Write([]byte(strconv.Itoa(lineNumber) + " "))
 	}
-	if !l.fileName && l.lineNumber && l.funcName {
+	if !l.FileName && l.LineNumber && l.FuncName {
 		funcName := strings.Split(runtime.FuncForPC(pc).Name(), ".")[1]
 		l.out.Write([]byte(funcName + "() " + strconv.Itoa(lineNumber) + " "))
 	}
@@ -92,7 +92,7 @@ func (l *Logger) Print(messages ...Msg) {
 		l.out.Write([]byte(messages[0] + "\n"))
 		return
 	}
-	if !l.date && !l.time && !l.fileName && !l.lineNumber && !l.funcName {
+	if !l.Date && !l.Time && !l.FileName && !l.LineNumber && !l.FuncName {
 		for _, message := range messages {
 			l.out.Write([]byte(message + "\n"))
 		}
